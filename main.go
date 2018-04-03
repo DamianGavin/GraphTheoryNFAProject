@@ -51,6 +51,12 @@ func poregtonfa(pofix string) *nfa {
 			frag1.accept.edge1 = frag2.initial
 			nfastack = append(nfastack, &nfa{initial: frag1.initial, accept: frag2.accept})
 
+			/*case '+':
+	e = pop();
+	s = state(Split, e.start, NULL);
+	patch(e.out, s);
+	push(frag(e.start, list1(&s->out1)));
+	break;*/
 		case '|': //or is similar, but I need new accept and initial states.
 			frag2 := nfastack[len(nfastack)-1]
 			nfastack = nfastack[:len(nfastack)-1]
@@ -99,36 +105,53 @@ func poregtonfa(pofix string) *nfa {
 	//the goal is only 1 item on nfa stack at the end
 	return nfastack[0]
 }
-func addstate(l []*state, s *state, a *state) []*state{
+
+//this helper function is recursive.
+func addState(l []*state, s *state, a *state) []*state {
 	l = append(l, s)
 
+	//any state that has the 0 value of runes it means there are e arrows
+	//coming from it.
 	if s != a && s.symbol == 0{
-		l = addstate(l, s.edge1, a)
+		//if we get in here we're not in the accept state
+		l = addState(l, s.edge1, a)
 		if s.edge2 != nil{
-			l = addstate (l, s.edge2, a)
+			l = addState(l, s.edge2, a)
 		}
 	}
 	return l
 }
 
+//this function takes a postfix reg ex as 1st argument and string s.
 func pomatch(po string, s string) bool{
 	ismatch := false
 	ponfa := poregtonfa(po)
 
+	//I need to keep track of where I am
 	var current []*state
 	var next []*state
 
-	current = addstate(current[:], ponfa.initial, ponfa.accept)
+	//traverse the linked list of ponfa by creating a function addState
+	//every time I need to add a state this will be called. It will also look at the states
+	//available to the current state.
+	current = addState(current[:], ponfa.initial, ponfa.accept)
 
+	//loop through s a character at a time. Everytime I read a character I llo
+	//through current array "c".
 	for _, r := range s {
 		for _, c := range current{
+			//if c is the same as the symbol I am reading from r
 			if c.symbol == r{
-				next = addstate(next[:], c.edge1, ponfa.accept)
+				//follow the arrow.
+				next = addState(next[:], c.edge1, ponfa.accept)
 			}
 		}
+		//swap current and next, and forget previous next and make it current.
 		current, next = next, []*state{}
 
 	}
+	//loop through the current array(the state I am in) and if the state I am
+	//looping through=accept state of ponfa, match is true.
 	for _, c := range current{
 		if c == ponfa.accept{
 			ismatch = true
