@@ -20,6 +20,12 @@ func poregtonfa(pofix string) *nfa {
 
 	for _, r := range pofix {
 		switch r {
+		/*case '.':
+			e2 = pop();
+			e1 = pop();
+			patch(e1.out, e2.start);
+			push(frag(e1.start, e2.out));
+			break;*/
 		case '.':
 			frag2 := nfastack[len(nfastack)-1]
 			nfastack = nfastack[:len(nfastack)-1]
