@@ -2,6 +2,8 @@
   <dictionary name="damot">
     <words>
       <w>datatype</w>
+      <w>gmit</w>
+      <w>gopath</w>
       <w>intopost</w>
       <w>nfastack</w>
       <w>pofix</w>
