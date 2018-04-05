@@ -3,9 +3,11 @@
     <words>
       <w>datatype</w>
       <w>intopost</w>
+      <w>nfastack</w>
       <w>pofix</w>
       <w>pomatch</w>
       <w>ponfa</w>
+      <w>poregtonfa</w>
     </words>
   </dictionary>
 </component>
