@@ -1,13 +1,14 @@
-package nfa
-
-import "fmt"
-
 //Damian Gavin: Graph theory project 2018
+
 //Non-Finite-Automaton
 //Adapted from https://web.microsoftstream.com/video/68a288f5-4688-4b3a-980e-1fcd5dd2a53b
 //https://web.microsoftstream.com/video/bad665ee-3417-4350-9d31-6db35cf5f80d
 
 //I have also used https://swtch.com/~rsc/regexp/regexp1.html in my research for this project
+
+package nfa
+
+import "fmt"
 
 //Struct called state with 2 edges.
 type state struct {
@@ -49,12 +50,6 @@ func poregtonfa(pofix string) *nfa {
 			frag1.accept.edge1 = frag2.initial
 			nfastack = append(nfastack, &nfa{initial: frag1.initial, accept: frag2.accept})
 
-			/*case '+':
-			e = pop();
-			s = state(Split, e.start, NULL);
-			patch(e.out, s);
-			push(frag(e.start, list1(&s->out1)));
-			break;*/
 		case '|': //or is similar, but I need new accept and initial states.
 			frag2 := nfastack[len(nfastack)-1]
 			nfastack = nfastack[:len(nfastack)-1]
@@ -87,6 +82,26 @@ func poregtonfa(pofix string) *nfa {
 			frag.accept.edge2 = &accept
 
 			nfastack = append(nfastack, &nfa{initial: &initial, accept: &accept})
+
+		case '+':
+			//take a single element off the stack
+			frag := nfastack[len(nfastack)-1]
+			nfastack = nfastack[:len(nfastack)-1]
+			accept := state{}
+			//create an edge pointing back at itself
+			initial := state{edge1: frag.initial, edge2: &accept}
+			frag.accept.edge1 = &initial
+			nfastack = append(nfastack, &nfa{initial: frag.initial, accept: &accept})
+
+		case '?':
+			//take a single element off the stack
+			frag := nfastack[len(nfastack)-1]
+			nfastack = nfastack[:len(nfastack)-1]
+			// create a new state that points to the existing item and also the accept state
+			initial := state{edge1: frag.initial, edge2: frag.accept}
+			//push the new nfa onto the stack
+			nfastack = append(nfastack, &nfa{initial: &initial, accept: frag.accept})
+
 		default: //all I need is to push off the stack, create new accept state.
 			accept := state{}
 			//new initial state where r points at edge1 state just created.
@@ -162,7 +177,7 @@ func pomatch(po string, s string) bool {
 
 func infixToPostfix(infix string) string {
 	//A map called specials which will map *, ., | to integer values
-	specials := map[rune]int{'*': 10, '+': 9, '.': 8, '|': 7}
+	specials := map[rune]int{'*': 10, '+': 9, '?': 8, '.': 7, '|': 6}
 	//stack s
 	var s []rune
 	//Built in rune datatype. A rune is a character as displayed on-screen(UTF-8)
