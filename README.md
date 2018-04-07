@@ -1,4 +1,4 @@
-## GraphTheoryNFAProject
+# GraphTheoryNFAProject
 
 ## Introduction
 
@@ -36,14 +36,14 @@ and run the program.
 go run main.go
 ```
 
-## The code.
+# The code.
 I have adapted my program from Two main sources, the first on being the videos supplied to me by my module lecturer
  [Ian Mcloughlin](https://github.com/ianmcloughlin)
  and the second being a paper written by Russ Cox.[this paper](https://swtch.com/~rsc/regexp/regexp1.html)
 
  The program consists of two algorithms that I have combined into one program. These are called the Shunting yard algorithm
  and Thompsons algorithm.
- # ShuntingYard
+ ## ShuntingYard
  Regular Expression Algorithm
 
  In computer science, the shunting-yard algorithm is a method for parsing mathematical expressions specified in infix notation.
@@ -59,7 +59,7 @@ I have adapted my program from Two main sources, the first on being the videos s
 
  The shunting-yard algorithm was later generalized into operator-precedence parsing.
 
- #Thomson's construction algorithm.
+ ## Thomson's construction algorithm.
 
  In Computer science this algorithm is for transforming a regular expression into an equivalent nondeterministic finite automaton(NFA).
  This can then be used to match strings against the regular expression.
