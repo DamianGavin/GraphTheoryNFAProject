@@ -36,7 +36,7 @@ and run the program.
 go run main.go
 ```
 
-##The code.
+## The code.
 I have adapted my program from Two main sources, the first on being the videos supplied to me by my module lecturer
  [Ian Mcloughlin](https://github.com/ianmcloughlin)
  and the second being a paper written by Russ Cox.[this paper](https://swtch.com/~rsc/regexp/regexp1.html)
