@@ -25,7 +25,7 @@ If you have git installed you can clone the repository here:
 ```bash
 git clone https://github.com/DamianGavin/GraphTheoryNFAProject
 ```
-to clone the project. You can also click on the "Clone or Download" button to download the project in a zip file.
+You can also click on the "Clone or Download" button to download the project in a zip file.
 
 Next you will need to navigate to the new directory
 ```bash
